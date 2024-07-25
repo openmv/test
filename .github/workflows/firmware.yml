@@ -22,6 +22,6 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         overwrite: true
-        name: ${{ steps.generate_report.outputs.code_size_report }}
+        name: code-size-report
         path: ${{ github.workspace }}/${{ steps.generate_report.outputs.code_size_report }}
         if-no-files-found: error
