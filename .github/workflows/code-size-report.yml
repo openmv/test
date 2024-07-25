@@ -18,7 +18,7 @@ jobs:
         run-id: ${{ github.event.workflow_run.id }}
         github-token: ${{ github.token }}
 
-    - name: '📝 Check Report'
+    - name: '📝 Check report'
       id: generate_report
       run: |
         # Get the filename matching the pattern *.md
