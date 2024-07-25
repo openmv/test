@@ -19,11 +19,9 @@ jobs:
         github-token: ${{ github.token }}
 
     - name: '📝 Check report'
+      id: generate_report
       run: |
-        # List the contents of the workspace to verify the file exists
-        ls -1 -R ${GITHUB_WORKSPACE}
-    
-        # Get the filename matching the pattern *.md (assuming there is only one such file)
+        # Get the filename matching the pattern *.md
         CODE_SIZE_REPORT=$(ls ${GITHUB_WORKSPACE}/*.md)
         echo "Code Size Report: ${CODE_SIZE_REPORT}"
     
