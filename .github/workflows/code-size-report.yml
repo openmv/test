@@ -14,22 +14,30 @@ jobs:
     - name: '↓ Download code size report'
       uses: actions/download-artifact@v4
       with:
-        name: "code-size-report"
+        name: code-size-report
         run-id: ${{ github.event.workflow_run.id }}
         github-token: ${{ github.token }}
 
     - name: '📝 Check report'
       run: |
+        # List the contents of the workspace to verify the file exists
         ls -1 -R ${GITHUB_WORKSPACE}
-        CODE_SIZE_REPORT=code-size-report.md
-        cat ${GITHUB_WORKSPACE}/${CODE_SIZE_REPORT}
-
-        PR_NUMBER=$(jq -r '.workflow_run.pull_requests[0].number' < "$GITHUB_EVENT_PATH")
+    
+        # Get the filename matching the pattern *.md (assuming there is only one such file)
+        CODE_SIZE_REPORT=$(ls ${GITHUB_WORKSPACE}/*.md)
+        echo "Code Size Report: ${CODE_SIZE_REPORT}"
+    
+        # Extract the PR number from the filename
+        # Assuming the filename format is <pr_number>.md
+        PR_NUMBER=$(basename "${CODE_SIZE_REPORT}" .md)
         echo "Pull Request Number: $PR_NUMBER"
-
-        if [ -s ${GITHUB_WORKSPACE}/${CODE_SIZE_REPORT} ]; then
+    
+        # Check if the report file is not empty
+        if [ -s "${CODE_SIZE_REPORT}" ]; then
           echo "pr_number=${PR_NUMBER}" >> $GITHUB_OUTPUT
           echo "code_size_report=${CODE_SIZE_REPORT}" >> $GITHUB_OUTPUT
+        else
+          echo "The report file is empty."
         fi
 
     - name: '📝 Post report'
