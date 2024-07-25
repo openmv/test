@@ -13,7 +13,7 @@ jobs:
       run: |
         CODE_SIZE_REPORT=${{ github.event.pull_request.number }}.md
         echo "Test" > ${GITHUB_WORKSPACE}/${CODE_SIZE_REPORT}
-        if [ -s ${GITHUB_WORKSPACE}/${CODE_SIZE_REPORT}/report.md ]; then
+        if [ -s ${GITHUB_WORKSPACE}/${CODE_SIZE_REPORT} ]; then
           echo "code_size_report=${CODE_SIZE_REPORT}" >> $GITHUB_OUTPUT
         fi
 
