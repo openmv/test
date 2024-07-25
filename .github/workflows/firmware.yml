@@ -6,13 +6,22 @@ on:
 
 jobs:
   code-size-report:
-    needs: build-firmware
     runs-on: ubuntu-22.04
     steps:
-    - name: Trigger Code Size Report
-      uses: benc-uk/workflow-dispatch@v1
+    - name: '📝 Generate report'
+      id: generate_report
+      run: |
+        CODE_SIZE_REPORT=code-size-report.md
+        echo "Test" > ${GITHUB_WORKSPACE}/${CODE_SIZE_REPORT}
+        if [ -s ${GITHUB_WORKSPACE}/${CODE_SIZE_REPORT} ]; then
+          echo "code_size_report=${CODE_SIZE_REPORT}" >> $GITHUB_OUTPUT
+        fi
+
+    - name: '⬆ Upload code report'
+      if: steps.generate_report.outputs.code_size_report != ''
+      uses: actions/upload-artifact@v4
       with:
-        workflow: code-size-report.yml
-        token: ${{ secrets.GITHUB_TOKEN }}
-        inputs: 
-          pr_number: ${{ github.event.pull_request.number }}
+        overwrite: true
+        name: ${{ steps.generate_report.outputs.code_size_report }}
+        path: ${{ github.workspace }}/${{ steps.generate_report.outputs.code_size_report }}
+        if-no-files-found: error
