@@ -1,4 +1,4 @@
-name: Code Report
+name: Code Size Report
 
 on:
   workflow_dispatch:
@@ -11,8 +11,8 @@ permissions:
   pull-requests: write
 
 jobs:
-  if: ${{ github.event.workflow_run.conclusion == 'success' }}
-  download-artifact:
+  code-size-report:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
     - name: '📝 Generate report'
