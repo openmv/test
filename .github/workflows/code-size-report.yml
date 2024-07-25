@@ -21,7 +21,7 @@ jobs:
 
     - name: '📝 Check report'
       run: |
-        ls -1 -R
+        ls -1 -R ${GITHUB_WORKSPACE}
         CODE_SIZE_REPORT=code-size-report.md
         cat ${GITHUB_WORKSPACE}/${CODE_SIZE_REPORT}
 
