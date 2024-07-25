@@ -19,7 +19,7 @@ jobs:
         run-id: ${{ github.event.workflow_run.id }}
         github-token: ${{ github.token }}
 
-    - name: '📝 Check report'
+    - name: '📝 Check Report'
       run: |
         ls -1 -R ${GITHUB_WORKSPACE}
         CODE_SIZE_REPORT=code-size-report.md
