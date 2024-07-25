@@ -18,7 +18,7 @@ jobs:
         run-id: ${{ github.event.workflow_run.id }}
         github-token: ${{ github.token }}
 
-    - name: '📝 Check report'
+    - name: '📝 Check Report'
       run: |
         # List the contents of the workspace to verify the file exists
         ls -1 -R ${GITHUB_WORKSPACE}
