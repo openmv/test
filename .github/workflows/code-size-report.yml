@@ -1,0 +1,32 @@
+name: Code Report
+
+on:
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'The pull request number'
+        required: true
+
+permissions:
+  pull-requests: write
+
+jobs:
+  if: ${{ github.event.workflow_run.conclusion == 'success' }}
+  download-artifact:
+    runs-on: ubuntu-latest
+    steps:
+    - name: '📝 Generate report'
+      id: generate_report
+      run: |
+        CODE_SIZE_REPORT=code_size_report.md
+        echo "Test" > ${GITHUB_WORKSPACE}/${CODE_SIZE_REPORT}
+        if [ -s ${GITHUB_WORKSPACE}/${CODE_SIZE_REPORT} ]; then
+          echo "code_size_report=${CODE_SIZE_REPORT}" >> $GITHUB_OUTPUT
+        fi
+
+    - name: '📝 Post report'
+      if: steps.generate_report.outputs.code_size_report != ''
+      uses: thollander/actions-comment-pull-request@v2
+      with:
+        pr_number: ${{ github.event.pull_request.number }}
+        filePath: ${{ github.workspace }}/${{ steps.generate_report.outputs.code_size_report }}

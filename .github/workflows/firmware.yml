@@ -1,0 +1,18 @@
+name: '🔥 Firmware Build'
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  code-size-report:
+    needs: build-firmware
+    runs-on: ubuntu-22.04
+    steps:
+    - name: Trigger Code Size Report
+      uses: benc-uk/workflow-dispatch@v1
+      with:
+        workflow: code-size-report.yml
+        token: ${{ secrets.GITHUB_TOKEN }}
+        inputs: 
+          pr_number: ${{ github.event.pull_request.number }}
